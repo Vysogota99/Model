@@ -27,7 +27,17 @@
             <v-list-item-title v-text="item[0]"></v-list-item-title>
           </v-list-item>
         </v-list-group>
-
+        <v-list-item
+                link
+                to="/seird"
+        >
+          <v-list-item-action>
+            <v-icon>mdi-chart-multiple</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Covid-19 with SEIRD</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -76,8 +86,8 @@
       drawer: false,
       storage: [
         ['Математическия модель', 'mdi-calculator-variant', '/sir/model'],
-        ['Описание модели', 'mdi-book-open-outline', '/sir/example'],
-        ['Пример использования', 'mdi-bacteria', '/sir/theory'],
+        ['Описание модели', 'mdi-book-open-outline', '/sir/theory'],
+        ['Пример использования', 'mdi-bacteria', '/sir/example'],
       ],
     }),
     created () {

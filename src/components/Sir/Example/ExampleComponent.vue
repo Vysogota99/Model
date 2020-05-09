@@ -1,70 +1,168 @@
 <template>
-    <v-container>
-        <v-row>
+    <div class="samples">
+        <v-row justify="center">
+            <v-col cols="6">
+                <br><br>
+                <h1 style="font-size: 3rem">SIR</h1>
+                <br>
+                <p>
+                    Для понимания работы модели необходимо ознакомиться с теоретической частью. В ней подробно описаны уравнения и параметры, которые задают модель.
+               </p>
 
+                <br>
+                <h2 style="color: #B0B0B0">Описание рабочей области</h2>
+                <br>
+                <p>
+                    Рабочая область состоит из интерактивного графика, формы для установки начальных условий и двух полей с описательными хараактеристиками. Далее рассмотрим каждый элемент по отдельности.
+                </p>
+                <br>
+
+                <h2 style="color: #B0B0B0">Установка начальных условий</h2>
+                <br>
+                <p>
+                    Модель SIR описывается задачей Коши с начальными условиями - количество здоровых, инфицированных, выздоровевших, β и γ. Пример заполнения параметров представлен ниже.
+                </p>
+                <p>
+                    Количество здоровых людей устанавливается в поле "Susceptible". В силу ограничений программы, это число является константой, и его нельзя изменить. Таким образом количество здоровых людей - 100.
+                </p>
+                <br>
+                <div class="d_container">
+                    <div class="img">
+                        <img src="./s0.png">
+                    </div>
+                </div>
+                <br>
+                <br>
+
+
+                <p>
+                    Количество инфицированных в начальный момент времени устанавливается в поле "Infected". Поле представляет собой слайдер, при помощи которого можно выбрать долю здоровых людей. В данном случае количество инфицированных - 1.
+                </p>
+                <br>
+                <div class="d_container">
+                    <div class="img">
+                        <img src="./i0.png">
+                    </div>
+                </div>
+                <br>
+                <br>
+
+                <p>
+                    Количество выздоровевших в начальный момент времени устанавливается в поле "Recovered". В данном случае установлено значение 0.
+                </p>
+                <br>
+                <div class="d_container">
+                    <div class="img">
+                        <img src="./ro.png">
+                    </div>
+                </div>
+                <br>
+                <br>
+
+
+                <p>
+                    Параметр β в начальный момент времени устанавливается в поле "Betta". Он показывает коэффициент интенсивности контактов индивидов с последующим инфицированием, установим значение 0.75.
+                </p>
+                <br>
+                <div class="d_container">
+                    <div class="img">
+                        <img src="./betta.png">
+                    </div>
+                </div>
+                <br>
+                <br>
+
+
+                <p>
+                    Параметр γ в начальный момент времени устанавливается в поле "Gamma". Он показывает коэффициент интенсивности выздоровления инфицированных индивидов, установим значение 0.25. На этом этапе процесс настройки модели завершается, далее перейдем к анализу полученных результатов.
+                </p>
+                <br>
+                <div class="d_container">
+                    <div class="img">
+                        <img src="./gamma.png">
+                    </div>
+                </div>
+                <br>
+                <br>
+
+
+<!--                -->
+                <br>
+                <h2 style="color: #B0B0B0">Результат работы модели</h2>
+                <br>
+                <p>
+                    Рассмотрим полученные фазовые траектории. В модели строится интерактивных график, что позволяют с легкостью отпределить нужные значения в произвольный момент времени. Для этого необходимо навести курсор на конкретную точку графика, после чего появится окно, в котором представлены дискретные значения. Синяя прямая показывает значения здоровых людей, зеленая - выздоровевших, а оранжевая - число зараженных. В данном примере мы видим, что при заданных начальных условиях пик эпидемии приходится на 12 сутки, после чего люди приобретают иммунитет и болезнь полностью уходит уже через месяц.
+                </p>
+                <br>
+                <div class="d_container">
+                    <div class="img" style="width: 820px;">
+                        <img src="./chart.png">
+                    </div>
+                </div>
+                <br>
+                <br>
+
+
+                <p>
+                В окне "Basic reproduction number" указывается количество людей, зараженных одним переносчиком болезни.
+                </p>
+                <br>
+                <div class="d_container">
+                    <div class="img">
+                        <img src="./B0.png">
+                    </div>
+                </div>
+                <br>
+                <br>
+
+
+                <p>
+                    В окне "Average days to recover from infectious" указывается среднее время выздоровления
+                </p>
+                <br>
+                <div class="d_container">
+                    <div class="img">
+                        <img src="./D.png">
+                    </div>
+                </div>
+                <br>
+                <br>
+                <v-btn
+                        color="blue"
+                        text
+                        to="/sir/model"
+                >
+                    Протестировать >
+                </v-btn>
+            </v-col>
         </v-row>
-    </v-container>
+    </div>
 </template>
 
 <script>
     export default {
         data () {
             return {
-                S0: 100,
-                I0: 0.1,
-                R0: 0,
-                b: 0.1,
-                g :0.1,
-                T:100,
-                N:100,
-                result: [],
-            }
-        },
-        methods: {
-            solve_ode: function (y0, I, T, f){
-                let data = [y0];
-                let dt = (I[1] - I[0]) / T;
-                for (let i = 1; i < T; ++i) {
-                    let dS_dt = data[i - 1][0] + dt * f(0, data[i - 1])[0];
-                    let dI_dt = data[i - 1][1] + dt * f(0, data[i - 1])[1];
-                    let dR_dt = data[i - 1][2] + dt * f(0, data[i - 1])[2];
-                    data.push([dS_dt, dI_dt, dR_dt]);
-                }
-                return data
-            },
-            ode: function () {
-                let I = [0, 100];
-                let T = 1000;
-                let self = this;
-
-                let f = function (t, x) {
-                    let beta = self.b;
-                    let gamma = self.g;
-
-                    let y = [];
-                    y[0] = - beta * x[0] * x[1]/self.N;
-                    y[1] = beta * x[0] * x[1]/self.N - gamma * x[1];
-                    y[2] = gamma * x[1];
-
-                    return y;
-                }
-                let y0 = [this.N, 0.01 * this.N, 0];
-                return this.solve_ode(y0, I, T, f);
 
             }
         },
-        mounted() {
-            let data_ode = this.ode();
-            let dataSusceptible = [];
-            let dataInfected = [];
-            let dataRecovered = [];
-
-            for (let i = 0; i < data_ode.length; i++) {
-                dataSusceptible[i] = data_ode[i][0];
-                dataInfected[i] = data_ode[i][1];
-                dataRecovered[i] = data_ode[i][2];
-            }
-            console.log(dataSusceptible)
-        }
     }
 </script>
+
+<style scoped>
+    span{
+        font-weight: bold;
+    }
+    .d_container{
+        width: 100%;
+    }
+    .img{
+        width: 410px;
+        margin: 0 auto;
+    }
+    img{
+        width: 100%;
+    }
+    .samples{
+    }
+</style>

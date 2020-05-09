@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import Sir from './Modules/sir'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -20,6 +20,6 @@ export default new Vuex.Store({
     },
 
     modules: {
-
+        Sir,
     }
 })

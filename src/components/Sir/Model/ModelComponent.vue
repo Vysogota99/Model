@@ -4,26 +4,20 @@
         <v-row>
             <v-col>
                 <v-row>
-                    <v-card class="mr-2">
-                        <v-card-title style="color: #B0B0B0">Susceptible</v-card-title>
+                    <v-card class="mr-2" min-width="250">
+                        <v-card-title style="color: #B0B0B0">Basic reproduction number</v-card-title>
                         <v-card-text class="text--primary">
-                            <p style="font-size: 50px">60123</p>
+                            <p style="font-size: 50px">{{b0}}</p>
                         </v-card-text>
                     </v-card>
 
-                    <v-card class="mr-2">
-                        <v-card-title style="color: #B0B0B0">Infected</v-card-title>
+                    <v-card class="mr-2" min-width="250">
+                        <v-card-title style="color: #B0B0B0">Average days to recover from infectious</v-card-title>
                         <v-card-text class="text--primary">
-                            <p style="font-size: 50px">1200 </p>
+                            <p style="font-size: 50px">{{d}} </p>
                         </v-card-text>
                     </v-card>
 
-                    <v-card class="mr-2">
-                        <v-card-title style="color: #B0B0B0;">Recovered</v-card-title>
-                        <v-card-text class="text--primary">
-                            <p style="font-size: 50px">594</p>
-                        </v-card-text>
-                    </v-card>
                 </v-row>
                 <v-row>
                     <v-col :cols="7" style="padding: 0;">
@@ -174,52 +168,135 @@
 
 <script>
     import apexchart from 'vue-apexcharts'
+    // import {mapGetters} from 'vuex'
+    // import {debounce} from 'lodash'
     export default {
         components: {
             apexchart
         },
         name: "ModelComponent",
         data: () => ({
-            valid: true,
-            ex1: { label: 'color', val: 25, color: 'orange darken-3' },
+            dataSusceptible: [],
+            dataInfected: [],
+            dataRecovered: [],
+            range: [],
+
             S0: 100,
-            I0: 0.1,
+            valid: true,
+            self: this,
+            ex1: { label: 'color', val: 25, color: 'orange darken-3' },
+            I0: 0.01,
             R0: 0,
-            b: 0.1,
-            g :0.1,
+            b: 0.75,
+            g :0.25,
             min: 0,
             max: 1,
             step: 0.01,
-            range: [-20, 70],
+
             N: 100,
             options: {
+                noData: {
+                    text: 'Loading...'
+                },
                 chart: {
-                    id: 'vuechart-example'
+                    id: 'vuechart-example',
+                    events: {
+
+                    }
                 },
                 xaxis: {
-                    categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+                    categories: [],
+                    labels: {
+                        style:{
+                            colors: "white",
+                        },
+                    },
+                    tickAmount: 10
+                },
+                yaxis: {
+                    max: 100,
+                    labels: {
+                        style:{
+                            colors: "white",
+                        },
+                        formatter: function(val) {
+                            return val.toFixed(1);
+                        }
+                    },
+                },
+                legend:{
+                    show: false,
+                    labels: {
+                        colors: "white",
+                    }
+                },
+                theme: {
+                    mode: 'light',
+                    palette: 'palette1'
+                },
+                tooltip:{
+                    enabled: true,
+                    theme: 'dark',
+                    // custom: function() {
+                    //     return '<div class="arrow_box">' +
+                    //         '</div>'
+                    // }
                 }
             },
             series: [{
-                name: 'series-1',
-                data: [30, 40, 45, 50, 49, 60, 70, 91]
-            },
-                {
-                    name: 'series-2',
-                    data: [40, 30, 95, 20, 19, 40, 80, 91]
-                },
-                {
-                    name: 'series-3',
-                    data: [32, 42, 41, 40, 29, 65, 60, 92]
-                }
-            ]
+                        name: 'Susceptible',
+                        data: []
+                    },
+                    {
+                        name: 'Recovered',
+                        data: []
+                    },
+                    {
+                        name: 'Infected',
+                        data: []
+                    }]
         }),
         computed: {
+            S0: function () {
+                // return this.$store.getters.get_SO;
+                return this.S0
+            },
             i_0_counter: function(){
                 return this.I0 * this.S0;
+            },
+            b0: function () {
+                return (this.b / this.g).toFixed(1);
+            },
+            d: function () {
+                return (1/this.g).toFixed(1);
             }
         },
+
+        // computed: mapGetters(
+        //   [
+        //       'get_S0',
+        //       'get_i_0_counter',
+        //       'get_b0',
+        //       'get_d',
+        //   ]
+        // ),
         methods: {
+            create_chart:function(){
+                console.log("creating chart");
+                let data_ode = this.ode();
+                for (let i = 0; i < data_ode.length; i++) {
+                    this.dataSusceptible[i] = data_ode[i][0];
+                    this.dataInfected[i] = data_ode[i][1];
+                    this.dataRecovered[i] = data_ode[i][2];
+                    this.range[i] = data_ode[i][3];
+                }
+
+                this.series[0].data = this.dataSusceptible;
+                this.series[1].data = this.dataRecovered;
+                this.series[2].data = this.dataInfected;
+                this.options.xaxis.categories = this.range;
+
+            },
             solve_ode: function (y0, I, T, f){
                 let data = [y0];
                 let dt = (I[1] - I[0]) / T;
@@ -227,13 +304,13 @@
                     let dS_dt = data[i - 1][0] + dt * f(0, data[i - 1])[0];
                     let dI_dt = data[i - 1][1] + dt * f(0, data[i - 1])[1];
                     let dR_dt = data[i - 1][2] + dt * f(0, data[i - 1])[2];
-                    data.push([dS_dt, dI_dt, dR_dt]);
+                    data.push([dS_dt, dI_dt, dR_dt, i]);
                 }
                 return data
             },
             ode: function () {
                 let I = [0, 100];
-                let T = 1000;
+                let T = 100;
                 let self = this;
 
                 let f = function (t, x) {
@@ -247,11 +324,30 @@
 
                     return y;
                 }
-                let y0 = [this.N, 0.01 * this.N, 0];
+                let y0 = [this.N, this.i_0_counter, 0];
                 return this.solve_ode(y0, I, T, f);
 
             }
         },
+
+        beforeMount() {
+            this.create_chart()
+        },
+
+        watch: {
+            b(){
+                this.create_chart()
+            },
+            g(){
+                this.create_chart()
+            },
+            I0(){
+                this.create_chart()
+            },
+            R0(){
+                this.create_chart()
+            }
+        }
     }
 </script>
 

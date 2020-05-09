@@ -4,7 +4,7 @@ import HomeComponent from "../components/Home/HomeComponent";
 import SirModel from "../components/Sir/Model/ModelComponent"
 import SirExample from "../components/Sir/Example/ExampleComponent"
 import SirTheory from "../components/Sir/Theory/TheoryComponent"
-
+import SeirdModel from "../components/Seird/Model/ModelComponent"
 
 Vue.use(VueRouter);
 const routes = [
@@ -23,6 +23,10 @@ const routes = [
     {
         path: '/sir/theory',
         component: SirTheory,
+    },
+    {
+        path: '/seird',
+        component: SeirdModel,
     },
 ];
 
