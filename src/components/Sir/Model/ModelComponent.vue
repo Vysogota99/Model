@@ -22,7 +22,7 @@
                 <v-row>
                     <v-col :cols="7" style="padding: 0;">
                         <v-card style="margin-top: 8px;padding: 15px;height: 650px;">
-                            <line-chart :chart-data="datacollection" :options="{responsive: true, maintainAspectRatio: true}" width="500" height="300"></line-chart>
+                            <line-chart :chart-data="datacollection" :options="{responsive: true, maintainAspectRatio: true}" :width=500 :height=300></line-chart>
                         </v-card>
                     </v-col>
                     <v-col :cols="5" style="padding-top: 10px;">
@@ -36,7 +36,7 @@
                                                 ref="form"
                                                 v-model="valid"
                                         >
-                                            <h2>{{s0}}</h2>
+                                            <h2 style="padding-left: 10px;">{{s0}}</h2>
                                         </v-form>
                                     </v-card-actions>
                                 </v-card>
@@ -170,8 +170,10 @@
 
 <script>
     import LineChart from "../../Charts/LineChart/LineChart";
-    import {mapActions} from 'vuex';
-    import {mapGetters} from 'vuex'
+    import {createNamespacedHelpers} from 'vuex'
+    // import {mapActions} from 'vuex';
+    // import {mapGetters} from 'vuex'
+    const {mapActions, mapGetters} = createNamespacedHelpers('sir');
 
     export default {
         components: {
@@ -190,7 +192,7 @@
                 return (1/this.gamma).toFixed(1);
             },
             r_0_values: function () {
-                return (1 - this.gamma/this.betta).toFixed(1);
+                return (this.betta/this.gamma).toFixed(1);
             },
             ...mapGetters({
                 x_series: 'get_x_series',
@@ -200,42 +202,42 @@
             }),
             s0: {
                 get() {
-                    return this.$store.getters.get_S0
+                    return this.$store.getters["sir/get_S0"]
                 },
                 set(value) {
-                    this.$store.commit('update_s0', value)
+                    this.$store.commit('sir/update_s0', value)
                 }
             },
             i0: {
                 get() {
-                    return this.$store.getters.get_I0
+                    return this.$store.getters["sir/get_I0"]
                 },
                 set(value) {
-                    this.$store.commit('update_i0', value)
+                    this.$store.commit('sir/update_i0', value)
                 }
             },
             r0: {
                 get() {
-                    return this.$store.getters.get_R0
+                    return this.$store.getters["sir/get_R0"]
                 },
                 set(value) {
-                    this.$store.commit('update_r0', value)
+                    this.$store.commit('sir/update_r0', value)
                 }
             },
             betta: {
                 get() {
-                    return this.$store.getters.get_betta
+                    return this.$store.getters["sir/get_betta"]
                 },
                 set(value) {
-                    this.$store.commit('update_betta', value)
+                    this.$store.commit('sir/update_betta', value)
                 }
             },
             gamma: {
                 get() {
-                    return this.$store.getters.get_gamma
+                    return this.$store.getters["sir/get_gamma"]
                 },
                 set(value) {
-                    this.$store.commit('update_gamma', value)
+                    this.$store.commit('sir/update_gamma', value)
                 }
             }
 
