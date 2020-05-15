@@ -7,22 +7,22 @@
                     <v-card class="mr-2" min-width="250">
                         <v-card-title style="color: #B0B0B0">Basic reproduction number</v-card-title>
                         <v-card-text class="text--primary">
-                            <p style="font-size: 50px">{{b0}}</p>
+                            <p style="font-size: 50px">{{r_0_values}}</p>
                         </v-card-text>
                     </v-card>
 
                     <v-card class="mr-2" min-width="250">
                         <v-card-title style="color: #B0B0B0">Average days to recover from infectious</v-card-title>
                         <v-card-text class="text--primary">
-                            <p style="font-size: 50px">{{d}} </p>
+                            <p style="font-size: 50px">{{d_value}} </p>
                         </v-card-text>
                     </v-card>
 
                 </v-row>
                 <v-row>
                     <v-col :cols="7" style="padding: 0;">
-                        <v-card style="margin-top: 8px;padding: 15px">
-                            <apexchart width="950" type="line" :options="options" :series="series" style="margin: 0px 0px;"></apexchart>
+                        <v-card style="margin-top: 8px;padding: 15px;height: 650px;">
+                            <line-chart :chart-data="datacollection" :options="{responsive: true, maintainAspectRatio: true}" width="500" height="300"></line-chart>
                         </v-card>
                     </v-col>
                     <v-col :cols="5" style="padding-top: 10px;">
@@ -33,15 +33,10 @@
                                     <v-card-title style="color: #B0B0B0;">Susceptible</v-card-title>
                                     <v-card-actions>
                                         <v-form
-
                                                 ref="form"
                                                 v-model="valid"
                                         >
-                                            <v-text-field
-                                                    v-model="S0"
-                                                    :counter="10"
-                                                    required
-                                            ></v-text-field>
+                                            <h2>{{s0}}</h2>
                                         </v-form>
                                     </v-card-actions>
                                 </v-card>
@@ -51,7 +46,7 @@
                                     <v-card-title style="color: #B0B0B0;">Betta</v-card-title>
                                     <v-card-actions>
                                         <v-slider
-                                                v-model="b"
+                                                v-model="betta"
                                                 class="align-center"
                                                 :max="max"
                                                 :min="min"
@@ -60,7 +55,7 @@
                                         >
                                             <template v-slot:append>
                                                 <v-text-field
-                                                        v-model="b"
+                                                        v-model="betta"
                                                         class="mt-0 pt-0"
                                                         hide-details
                                                         single-line
@@ -80,17 +75,16 @@
                                     <v-card-title style="color: #B0B0B0;">Infected</v-card-title>
                                     <v-card-actions>
                                         <v-slider
-                                                v-model="I0"
+                                                v-model="i0"
                                                 class="align-center"
-                                                :max="max"
-                                                :min="min"
-                                                :step="step"
-                                                :color="ex1.color"
+                                                :max="s0"
+                                                :min="0"
+                                                :step="1"
                                                 hide-details
                                         >
                                             <template v-slot:append>
                                                 <v-text-field
-                                                        v-model="i_0_counter"
+                                                        v-model="i0"
                                                         class="mt-0 pt-0"
                                                         hide-details
                                                         single-line
@@ -107,7 +101,7 @@
                                     <v-card-title style="color: #B0B0B0;">Gamma</v-card-title>
                                     <v-card-actions>
                                         <v-slider
-                                                v-model="g"
+                                                v-model="gamma"
                                                 class="align-center"
                                                 :max="max"
                                                 :min="min"
@@ -116,7 +110,7 @@
                                         >
                                             <template v-slot:append>
                                                 <v-text-field
-                                                        v-model="g"
+                                                        v-model="gamma"
                                                         class="mt-0 pt-0"
                                                         hide-details
                                                         single-line
@@ -135,17 +129,25 @@
                                 <v-card style="padding-left: 10px;margin-bottom: 10px;">
                                     <v-card-title style="color: #B0B0B0;">Recovered</v-card-title>
                                     <v-card-actions>
-                                        <v-form
-
-                                                ref="form"
-                                                v-model="valid"
+                                        <v-slider
+                                                v-model="r0"
+                                                class="align-center"
+                                                :max="s0"
+                                                :min="0"
+                                                :step="1"
+                                                hide-details
                                         >
-                                            <v-text-field
-                                                    v-model="R0"
-                                                    :counter="10"
-                                                    required
-                                            ></v-text-field>
-                                        </v-form>
+                                            <template v-slot:append>
+                                                <v-text-field
+                                                        v-model="r0"
+                                                        class="mt-0 pt-0"
+                                                        hide-details
+                                                        single-line
+                                                        type="number"
+                                                        style="width: 60px"
+                                                ></v-text-field>
+                                            </template>
+                                        </v-slider>
                                     </v-card-actions>
                                 </v-card>
                             </v-col>
@@ -167,186 +169,147 @@
 </template>
 
 <script>
-    import apexchart from 'vue-apexcharts'
-    // import {mapGetters} from 'vuex'
-    // import {debounce} from 'lodash'
+    import LineChart from "../../Charts/LineChart/LineChart";
+    import {mapActions} from 'vuex';
+    import {mapGetters} from 'vuex'
+
     export default {
         components: {
-            apexchart
+            LineChart
         },
         name: "ModelComponent",
         data: () => ({
-            dataSusceptible: [],
-            dataInfected: [],
-            dataRecovered: [],
-            range: [],
-
-            S0: 100,
+            datacollection: {},
             valid: true,
-            self: this,
-            ex1: { label: 'color', val: 25, color: 'orange darken-3' },
-            I0: 0.01,
-            R0: 0,
-            b: 0.75,
-            g :0.25,
             min: 0,
             max: 1,
             step: 0.01,
-
-            N: 100,
-            options: {
-                noData: {
-                    text: 'Loading...'
-                },
-                chart: {
-                    id: 'vuechart-example',
-                    events: {
-
-                    }
-                },
-                xaxis: {
-                    categories: [],
-                    labels: {
-                        style:{
-                            colors: "white",
-                        },
-                    },
-                    tickAmount: 10
-                },
-                yaxis: {
-                    max: 100,
-                    labels: {
-                        style:{
-                            colors: "white",
-                        },
-                        formatter: function(val) {
-                            return val.toFixed(1);
-                        }
-                    },
-                },
-                legend:{
-                    show: false,
-                    labels: {
-                        colors: "white",
-                    }
-                },
-                theme: {
-                    mode: 'light',
-                    palette: 'palette1'
-                },
-                tooltip:{
-                    enabled: true,
-                    theme: 'dark',
-                    // custom: function() {
-                    //     return '<div class="arrow_box">' +
-                    //         '</div>'
-                    // }
-                }
-            },
-            series: [{
-                        name: 'Susceptible',
-                        data: []
-                    },
-                    {
-                        name: 'Recovered',
-                        data: []
-                    },
-                    {
-                        name: 'Infected',
-                        data: []
-                    }]
         }),
-        computed: {
-            S0: function () {
-                // return this.$store.getters.get_SO;
-                return this.S0
+        computed:{
+            d_value: function () {
+                return (1/this.gamma).toFixed(1);
             },
-            i_0_counter: function(){
-                return this.I0 * this.S0;
+            r_0_values: function () {
+                return (1 - this.gamma/this.betta).toFixed(1);
             },
-            b0: function () {
-                return (this.b / this.g).toFixed(1);
+            ...mapGetters({
+                x_series: 'get_x_series',
+                y_series_S: 'get_y_series_S',
+                y_series_I: 'get_y_series_I',
+                y_series_R: 'get_y_series_R',
+            }),
+            s0: {
+                get() {
+                    return this.$store.getters.get_S0
+                },
+                set(value) {
+                    this.$store.commit('update_s0', value)
+                }
             },
-            d: function () {
-                return (1/this.g).toFixed(1);
+            i0: {
+                get() {
+                    return this.$store.getters.get_I0
+                },
+                set(value) {
+                    this.$store.commit('update_i0', value)
+                }
+            },
+            r0: {
+                get() {
+                    return this.$store.getters.get_R0
+                },
+                set(value) {
+                    this.$store.commit('update_r0', value)
+                }
+            },
+            betta: {
+                get() {
+                    return this.$store.getters.get_betta
+                },
+                set(value) {
+                    this.$store.commit('update_betta', value)
+                }
+            },
+            gamma: {
+                get() {
+                    return this.$store.getters.get_gamma
+                },
+                set(value) {
+                    this.$store.commit('update_gamma', value)
+                }
             }
+
         },
-
-        // computed: mapGetters(
-        //   [
-        //       'get_S0',
-        //       'get_i_0_counter',
-        //       'get_b0',
-        //       'get_d',
-        //   ]
-        // ),
         methods: {
-            create_chart:function(){
-                console.log("creating chart");
-                let data_ode = this.ode();
-                for (let i = 0; i < data_ode.length; i++) {
-                    this.dataSusceptible[i] = data_ode[i][0];
-                    this.dataInfected[i] = data_ode[i][1];
-                    this.dataRecovered[i] = data_ode[i][2];
-                    this.range[i] = data_ode[i][3];
+            ...mapActions({
+                linear_chart: 'plot'
+            }),
+
+            fillData () {
+                this.datacollection = {
+                    labels: this.x_series,
+                    datasets: [
+                        {
+                            borderColor: '#1467e3dd',
+                            label: 'S',
+                            backgroundColor: '#1467e39e',
+                            data: this.y_series_S,
+                            pointRadius: 2,
+                        },
+                        {
+                            borderColor: '#e8278ee1',
+                            label: 'I',
+                            backgroundColor: '#e8278eab',
+                            data: this.y_series_I,
+                            pointRadius: 2,
+                            pointStyle: 'rect',
+                        },
+                        {
+                            borderColor: '#27e88be1',
+                            label: 'R',
+                            backgroundColor: '#27e88b9e',
+                            data: this.y_series_R,
+                            pointRadius: 2,
+                            pointStyle: 'star',
+                        },
+                    ]
                 }
-
-                this.series[0].data = this.dataSusceptible;
-                this.series[1].data = this.dataRecovered;
-                this.series[2].data = this.dataInfected;
-                this.options.xaxis.categories = this.range;
-
             },
-            solve_ode: function (y0, I, T, f){
-                let data = [y0];
-                let dt = (I[1] - I[0]) / T;
-                for (let i = 1; i < T; ++i) {
-                    let dS_dt = data[i - 1][0] + dt * f(0, data[i - 1])[0];
-                    let dI_dt = data[i - 1][1] + dt * f(0, data[i - 1])[1];
-                    let dR_dt = data[i - 1][2] + dt * f(0, data[i - 1])[2];
-                    data.push([dS_dt, dI_dt, dR_dt, i]);
-                }
-                return data
-            },
-            ode: function () {
-                let I = [0, 100];
-                let T = 100;
-                let self = this;
-
-                let f = function (t, x) {
-                    let beta = self.b;
-                    let gamma = self.g;
-
-                    let y = [];
-                    y[0] = - beta * x[0] * x[1]/self.N;
-                    y[1] = beta * x[0] * x[1]/self.N - gamma * x[1];
-                    y[2] = gamma * x[1];
-
-                    return y;
-                }
-                let y0 = [this.N, this.i_0_counter, 0];
-                return this.solve_ode(y0, I, T, f);
-
-            }
         },
 
         beforeMount() {
-            this.create_chart()
+            this.linear_chart();
+            this.fillData();
         },
-
         watch: {
-            b(){
-                this.create_chart()
+            betta: function () {
+                //  пересчет данных
+                this.linear_chart();
+                // перерисовывание графика
+                this.fillData();
+
             },
-            g(){
-                this.create_chart()
+            gamma: function () {
+                //  пересчет данных
+                this.linear_chart();
+                // перерисовывание графика
+                this.fillData();
+
             },
-            I0(){
-                this.create_chart()
+            i0: function () {
+                //  пересчет данных
+                this.linear_chart();
+                // перерисовывание графика
+                this.fillData();
+
             },
-            R0(){
-                this.create_chart()
-            }
+            r0: function () {
+                //  пересчет данных
+                this.linear_chart();
+                // перерисовывание графика
+                this.fillData();
+
+            },
         }
     }
 </script>
