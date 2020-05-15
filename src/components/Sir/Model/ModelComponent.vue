@@ -5,14 +5,14 @@
             <v-col>
                 <v-row>
                     <v-card class="mr-2" min-width="250">
-                        <v-card-title style="color: #B0B0B0">Basic reproduction number</v-card-title>
+                        <v-card-title style="color: #B0B0B0">{{sir_R0}}</v-card-title>
                         <v-card-text class="text--primary">
                             <p style="font-size: 50px">{{r_0_values}}</p>
                         </v-card-text>
                     </v-card>
 
                     <v-card class="mr-2" min-width="250">
-                        <v-card-title style="color: #B0B0B0">Average days to recover from infectious</v-card-title>
+                        <v-card-title style="color: #B0B0B0">{{sir_D}}</v-card-title>
                         <v-card-text class="text--primary">
                             <p style="font-size: 50px">{{d_value}} </p>
                         </v-card-text>
@@ -30,7 +30,7 @@
                         <v-row>
                             <v-col :cols="6" style="padding-top: 0; padding-bottom: 5px;">
                                 <v-card style="padding-left: 10px;margin-bottom: 8px;">
-                                    <v-card-title style="color: #B0B0B0;">Susceptible</v-card-title>
+                                    <v-card-title style="color: #B0B0B0;">{{Susceptible}}</v-card-title>
                                     <v-card-actions>
                                         <v-form
                                                 ref="form"
@@ -43,7 +43,7 @@
                             </v-col>
                             <v-col :cols="6" style="padding-top: 0; padding-bottom: 5px; padding-left: 0;">
                                 <v-card style="padding-left: 10px;margin-bottom: 8px;">
-                                    <v-card-title style="color: #B0B0B0;">Betta</v-card-title>
+                                    <v-card-title style="color: #B0B0B0;">&beta;</v-card-title>
                                     <v-card-actions>
                                         <v-slider
                                                 v-model="betta"
@@ -72,7 +72,7 @@
                         <v-row>
                             <v-col :cols="6" style="padding-top: 0; padding-bottom: 5px;">
                                 <v-card style="padding-left: 10px;margin-bottom: 8px;">
-                                    <v-card-title style="color: #B0B0B0;">Infected</v-card-title>
+                                    <v-card-title style="color: #B0B0B0;">{{Infected}}</v-card-title>
                                     <v-card-actions>
                                         <v-slider
                                                 v-model="i0"
@@ -98,7 +98,7 @@
                             </v-col>
                             <v-col :cols="6" style="padding-top: 0; padding-bottom: 5px;  padding-left: 0;">
                                 <v-card style="padding-left: 10px;margin-bottom: 8px;">
-                                    <v-card-title style="color: #B0B0B0;">Gamma</v-card-title>
+                                    <v-card-title style="color: #B0B0B0;">&gamma;</v-card-title>
                                     <v-card-actions>
                                         <v-slider
                                                 v-model="gamma"
@@ -127,7 +127,7 @@
                         <v-row>
                             <v-col :cols="6" style="padding-top: 0; padding-bottom: 5px;">
                                 <v-card style="padding-left: 10px;margin-bottom: 10px;">
-                                    <v-card-title style="color: #B0B0B0;">Recovered</v-card-title>
+                                    <v-card-title style="color: #B0B0B0;">{{Recovered}}</v-card-title>
                                     <v-card-actions>
                                         <v-slider
                                                 v-model="r0"
@@ -170,10 +170,10 @@
 
 <script>
     import LineChart from "../../Charts/LineChart/LineChart";
-    import {createNamespacedHelpers} from 'vuex'
-    // import {mapActions} from 'vuex';
-    // import {mapGetters} from 'vuex'
-    const {mapActions, mapGetters} = createNamespacedHelpers('sir');
+    // import {createNamespacedHelpers} from 'vuex'
+    import {mapActions} from 'vuex';
+    import {mapGetters} from 'vuex'
+    // const {mapActions, mapGetters} = createNamespacedHelpers('sir');
 
     export default {
         components: {
@@ -188,6 +188,7 @@
             step: 0.01,
         }),
         computed:{
+            ...mapGetters(['Susceptible', 'Infected', 'Recovered', 'sir_R0', 'sir_D']),
             d_value: function () {
                 return (1/this.gamma).toFixed(1);
             },
@@ -195,10 +196,10 @@
                 return (this.betta/this.gamma).toFixed(1);
             },
             ...mapGetters({
-                x_series: 'get_x_series',
-                y_series_S: 'get_y_series_S',
-                y_series_I: 'get_y_series_I',
-                y_series_R: 'get_y_series_R',
+                x_series: 'sir/get_x_series',
+                y_series_S: 'sir/get_y_series_S',
+                y_series_I: 'sir/get_y_series_I',
+                y_series_R: 'sir/get_y_series_R',
             }),
             s0: {
                 get() {
@@ -244,32 +245,31 @@
         },
         methods: {
             ...mapActions({
-                linear_chart: 'plot'
+                linear_chart: 'sir/plot'
             }),
-
             fillData () {
                 this.datacollection = {
                     labels: this.x_series,
                     datasets: [
                         {
                             borderColor: '#1467e3dd',
-                            label: 'S',
+                            label: this.Susceptible,
                             backgroundColor: '#1467e39e',
                             data: this.y_series_S,
                             pointRadius: 2,
                         },
                         {
                             borderColor: '#e8278ee1',
-                            label: 'I',
+                            label: this.Infected,
                             backgroundColor: '#e8278eab',
                             data: this.y_series_I,
                             pointRadius: 2,
                             pointStyle: 'rect',
                         },
                         {
-                            borderColor: '#27e88be1',
-                            label: 'R',
-                            backgroundColor: '#27e88b9e',
+                            borderColor: '#1ef7e9eb',
+                            label: this.Recovered,
+                            backgroundColor: '#1ef7e9a7',
                             data: this.y_series_R,
                             pointRadius: 2,
                             pointStyle: 'star',
@@ -277,40 +277,36 @@
                     ]
                 }
             },
+            async build_chart(){
+                await this.linear_chart();
+                this.fillData();
+            },
         },
 
-        beforeMount() {
-            this.linear_chart();
-            this.fillData();
+        mounted() {
+            this.build_chart();
         },
         watch: {
             betta: function () {
-                //  пересчет данных
-                this.linear_chart();
-                // перерисовывание графика
-                this.fillData();
-
+                this.build_chart();
             },
             gamma: function () {
-                //  пересчет данных
-                this.linear_chart();
-                // перерисовывание графика
-                this.fillData();
-
+                this.build_chart();
             },
             i0: function () {
-                //  пересчет данных
-                this.linear_chart();
-                // перерисовывание графика
-                this.fillData();
-
+                this.build_chart();
             },
             r0: function () {
-                //  пересчет данных
-                this.linear_chart();
-                // перерисовывание графика
-                this.fillData();
-
+                this.build_chart();
+            },
+            Susceptible: function () {
+                this.build_chart();
+            },
+            Infected: function () {
+                this.build_chart();
+            },
+            Recovered: function () {
+                this.build_chart();
             },
         }
     }

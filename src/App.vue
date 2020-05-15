@@ -35,7 +35,15 @@
             <v-icon>mdi-chart-multiple</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Covid-19 with SEIRD</v-list-item-title>
+            <v-list-item-title>Covid-19 и SEIRD</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-switch
+                    v-model="lang"
+                    :label="`Rus: ${lang.toString()}`"
+            ></v-switch>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -48,7 +56,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>
         <router-link to="/" style="color: #fff; text-decoration: none">
-          Модели распространения эпидемий
+          {{Title}}
         </router-link>
       </v-toolbar-title>
     </v-app-bar>
@@ -74,13 +82,24 @@
 
 
 <script>
-
+import {mapGetters} from 'vuex'
   export default {
     components: {
 
     },
     props: {
       source: String,
+    },
+    computed: {
+      ...mapGetters(['MatModel', 'ModelDesc', 'Sample', 'Title']),
+      lang: {
+        get() {
+          return this.$store.getters["isRus"]
+        },
+        set(value) {
+          this.$store.commit('change_lang', value)
+        }
+      },
     },
     data: () => ({
       drawer: false,
