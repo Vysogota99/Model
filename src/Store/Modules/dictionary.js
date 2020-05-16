@@ -41,6 +41,7 @@ export default {
         test: '',
         sir_D: '',
         sir_R0: '',
+        sir_pob: '',
         TheoryP1: '',
         TheoryP2: '',
         TheoryP3: '',
@@ -48,6 +49,16 @@ export default {
         TheoryP5: '',
         TheoryP6: '',
         TheoryTitle1: '',
+        HomeSirCard: '',
+        HomeSeirdCardP: '',
+        HomeTutorialCardP: '',
+        HomeModelCardP: '',
+        HomeLocalCardP: '',
+        HomeSeirdCardH: '',
+        HomeTutorialCardH: '',
+        HomeModelCardH: '',
+        HomeLocalCardH: '',
+        Go: '',
     },
     getters: {
         isRus: state => {
@@ -320,41 +331,83 @@ export default {
                 return 'What is SIR model'
             }
         },
-        // ModelDesc: state => {
-        //     if(state.isRus){
-        //         return '';
-        //     }else{
-        //         return ''
-        //     }
-        // },
-        // ModelDesc: state => {
-        //     if(state.isRus){
-        //         return '';
-        //     }else{
-        //         return ''
-        //     }
-        // },
-        // ModelDesc: state => {
-        //     if(state.isRus){
-        //         return '';
-        //     }else{
-        //         return ''
-        //     }
-        // },
-        // ModelDesc: state => {
-        //     if(state.isRus){
-        //         return '';
-        //     }else{
-        //         return ''
-        //     }
-        // },
-        // ModelDesc: state => {
-        //     if(state.isRus){
-        //         return '';
-        //     }else{
-        //         return ''
-        //     }
-        // },
+        sir_pob: state => {
+            if(state.isRus){
+                return 'Вероятность заразиться';
+            }else{
+                return 'Probability to be infected'
+            }
+        },
+        HomeSirCard: state => {
+            if(state.isRus){
+                return 'Модель SIR является своего рода компартментальной моделью, описывающей динамику инфекционных заболеваний...';
+            }else{
+                return 'The SIR model is a kind of compartmental model that describes the dynamics of infectious diseases.'
+            }
+        },
+        Go: state => {
+            if(state.isRus){
+                return 'Далее >';
+            }else{
+                return 'More >'
+            }
+        },
+        HomeSeirdCardP: state => {
+            if(state.isRus){
+                return 'Сразу видно, что SEIR-модель не очень годится для описания COVID-19 хотя бы потому, что в этой модели скрытые носители инфекции E незаразны. Исправить этот недостаток можно, введя, вслед за Pengpeng et al., дополнительный параметр...';
+            }else{
+                return 'It is immediately clear that the SEIR model is not very suitable for describing COVID-19, if only because in this model hidden carriers of E infection are not contagious. This shortcoming can be corrected by introducing, following Pengpeng et al., An additional parameter ...'
+            }
+        },
+        HomeTutorialCardP: state => {
+            if(state.isRus){
+                return 'С помощью данного руководства вы поймете как настроить модель';
+            }else{
+                return 'With this guide you will understand how to configure the model.'
+            }
+        },
+        HomeModelCardP: state => {
+            if(state.isRus){
+                return 'После ознакомления с руководством пользователя и теоретическими основами можно приступить к моделированию ...';
+            }else{
+                return 'After familiarizing yourself with the user manual and the theoretical background, you can start modeling ...'
+            }
+        },
+        HomeLocalCardP: state => {
+            if(state.isRus){
+                return 'Сайт переведен на двух языках: английский и русский';
+            }else{
+                return 'The site is translated in two languages: English and Russian'
+            }
+        },
+        HomeSeirdCardH: state => {
+            if(state.isRus){
+                return 'Проверка модели на реальных данных';
+            }else{
+                return 'Testing the model on real data'
+            }
+        },
+        HomeTutorialCardH: state => {
+            if(state.isRus){
+                return 'Руководство пользователя';
+            }else{
+                return 'User\'s manual'
+            }
+        },
+        HomeModelCardH: state => {
+            if(state.isRus){
+                return 'Математическая модель';
+            }else{
+                return 'Mathematical model'
+            }
+        },
+        HomeLocalCardH: state => {
+            if(state.isRus){
+                return 'Локализация';
+            }else{
+                return 'Localization'
+            }
+        },
 
     }
 }

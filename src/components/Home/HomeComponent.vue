@@ -19,80 +19,141 @@
                                     <v-card-title style="color: #232323">SIR</v-card-title>
                                 </v-img>
 
-                                <v-card-subtitle class="pb-0">Susceptible — Infected — Recovered</v-card-subtitle>
+                                <v-card-subtitle class="pb-0">{{Susceptible}} — {{Infected}} — {{Recovered}}</v-card-subtitle>
 
                                 <v-card-text class="text--primary">
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem, sequi.</div>
-
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut enim, illo inventore labore ullam voluptatibus.</div>
+                                <p>
+                                    {{HomeSirCard}}
+                                </p>
                                 </v-card-text>
 
                                 <v-card-actions>
                                     <v-btn
-                                            to="/sir/model"
+                                            to="/sir/theory"
                                             color="blue"
                                             text
                                     >
-                                        Подробнее
+                                        {{Go}}
                                     </v-btn>
                                 </v-card-actions>
                             </v-card>
 
                             <v-card
-                                    max-width="400"
+                                    width="820"
                                     height="500"
                                     class="mr-4"
                             >
                                 <v-img
                                         class="white--text align-end"
                                         height="300px"
-                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTVlzk1ZhiJ1JUEpto-e3oFfv2ehAX-ENiHKxwHAR_d-LRlS6AY&usqp=CAU"
+                                        src="/seir.png"
                                 >
                                     <v-card-title style="color: #232323">SEIR</v-card-title>
                                 </v-img>
 
-                                <v-card-subtitle class="pb-0">Susceptible — Infected — Exposed — Recovered</v-card-subtitle>
+                                <v-card-subtitle class="pb-0">{{HomeSeirdCardH}}</v-card-subtitle>
 
                                 <v-card-text class="text--primary">
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab beatae cum doloribus ea, illum maiores nisi quod similique velit veniam!</div>
+                                <p>
+                                {{HomeSeirdCardP}}
+                                </p>
                                 </v-card-text>
 
                                 <v-card-actions>
                                     <v-btn
+                                            to="/seird"
                                             color="blue"
                                             text
                                     >
-                                        Подробнее
+                                        {{test}}
                                     </v-btn>
                                 </v-card-actions>
                             </v-card>
-
+                        </v-row>
+                        <v-row align="center" justify="center">
                             <v-card
                                     max-width="400"
                                     height="500"
-                                    class="mr-4"
+                                    class="mr-4 mt-4"
                             >
                                 <v-img
                                         class="white--text align-end"
                                         height="300px"
-                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTVlzk1ZhiJ1JUEpto-e3oFfv2ehAX-ENiHKxwHAR_d-LRlS6AY&usqp=CAU"
+                                        src="/card3.jpg"
                                 >
-                                    <v-card-title style="color: #232323">SEIR</v-card-title>
                                 </v-img>
 
-                                <v-card-subtitle class="pb-0">Susceptible — Infected — Exposed — Recovered</v-card-subtitle>
+                                <v-card-subtitle class="pb-0">{{HomeTutorialCardH}}</v-card-subtitle>
 
                                 <v-card-text class="text--primary">
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab beatae cum doloribus ea, illum maiores nisi quod similique velit veniam!</div>
+                                    <p>
+                                        {{HomeTutorialCardP}}
+                                    </p>
                                 </v-card-text>
 
                                 <v-card-actions>
                                     <v-btn
+                                            to="/sir/example"
                                             color="blue"
                                             text
                                     >
-                                        Подробнее
+                                        {{Go}}
                                     </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                            <v-card
+                                    max-width="400"
+                                    height="500"
+                                    class="mr-4 mt-4"
+                            >
+                                <v-img
+                                        class="white--text align-end"
+                                        height="300px"
+                                        src="card4.png"
+                                >
+                                    <v-card-title style="color: #232323">SIR</v-card-title>
+                                </v-img>
+
+                                <v-card-subtitle class="pb-0">{{HomeModelCardH}}</v-card-subtitle>
+
+                                <v-card-text class="text--primary">
+                                    <p>
+                                        {{HomeModelCardP}}
+                                    </p>
+                                </v-card-text>
+
+                                <v-card-actions>
+                                    <v-btn
+                                            to="/sir/theory"
+                                            color="blue"
+                                            text
+                                    >
+                                        {{test}}
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                            <v-card
+                                    max-width="400"
+                                    height="500"
+                                    class="mr-4 mt-4"
+                            >
+                                <v-img
+                                        class="white--text align-end"
+                                        height="300px"
+                                        src="/card5.jpg"
+                                >
+                                    <v-card-title style="color: #232323"></v-card-title>
+                                </v-img>
+
+                                <v-card-subtitle class="pb-0">{{HomeLocalCardH}}</v-card-subtitle>
+
+                                <v-card-text class="text--primary">
+                                    <p>
+                                        {{HomeLocalCardP}}
+                                    </p>
+                                </v-card-text>
+
+                                <v-card-actions>
                                 </v-card-actions>
                             </v-card>
                         </v-row>
@@ -105,7 +166,11 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex'
     export default {
+        computed: {
+          ...mapGetters(['Susceptible', 'Infected', 'Recovered', 'HomeSirCard', 'Go', 'test', 'HomeSeirdCardP', 'HomeTutorialCardP','HomeModelCardP','HomeLocalCardP','HomeSeirdCardH','HomeTutorialCardH','HomeModelCardH','HomeLocalCardH'])
+        },
         name: "HomeComponent"
     }
 </script>
@@ -115,7 +180,7 @@
     .home{
         background-blend-mode: saturation;
         background-attachment: fixed;
-        height: 100vh;
+        min-height: 100vh;
         background-image:url("home_picture.jpg");
         background-position: center; /* Center the image */
         background-repeat: no-repeat; /* Do not repeat the image */

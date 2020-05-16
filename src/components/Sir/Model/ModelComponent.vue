@@ -18,6 +18,12 @@
                         </v-card-text>
                     </v-card>
 
+                    <v-card class="mr-2" min-width="250">
+                        <v-card-title style="color: #B0B0B0">{{sir_pob}}</v-card-title>
+                        <v-card-text class="text--primary">
+                            <p style="font-size: 50px">{{prob}} % </p>
+                        </v-card-text>
+                    </v-card>
                 </v-row>
                 <v-row>
                     <v-col :cols="7" style="padding: 0;">
@@ -188,12 +194,15 @@
             step: 0.01,
         }),
         computed:{
-            ...mapGetters(['Susceptible', 'Infected', 'Recovered', 'sir_R0', 'sir_D']),
+            ...mapGetters(['Susceptible', 'Infected', 'Recovered', 'sir_R0', 'sir_D', 'sir_pob']),
             d_value: function () {
                 return (1/this.gamma).toFixed(1);
             },
             r_0_values: function () {
                 return (this.betta/this.gamma).toFixed(1);
+            },
+            prob: function () {
+                return (this.betta * 100).toFixed(0);
             },
             ...mapGetters({
                 x_series: 'sir/get_x_series',
