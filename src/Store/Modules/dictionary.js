@@ -284,28 +284,28 @@ export default {
         },
         TheoryP1: state => {
             if(state.isRus){
-                return 'Модель SIR является своего рода компартментальной моделью, описывающей динамику инфекционных заболеваний. Вы можете задаться вопросом, почему это называется «компартментальная модель». Модель делит население на отсеки. Ожидается, что каждый отсек будет иметь одинаковые характеристики. SIR представляет три отделения, сегментированные моделью.';
+                return 'Модель SIR является своего рода компартментальной моделью, описывающей динамику инфекционных заболеваний. Вы можете задаться вопросом, почему она называется «компартментальная модель». Модель делит население на группы. Ожидается, что каждая группа будет иметь одинаковые характеристики. SIR представляет три группы, сегментированные моделью.';
             }else{
                 return ' SIR model is a kind of compartmental model describing the dynamics of infectious disease. You may wonder why it is called the “compartmental model.” The model divides the population into compartments. Each compartment is expected to have the same characteristics. SIR represents the three compartments segmented by the model.'
             }
         },
         TheoryP2: state => {
             if(state.isRus){
-                return 'Восприимчивый - это группа людей, которые уязвимы для контакта с инфекционными людьми. Они могут быть терпеливы, когда происходит инфекция. Группа заразных представляет зараженных людей. Они могут передать заболевание восприимчивым людям и могут быть восстановлены в определенный период. Выздоровевшие люди получают иммунитет, поэтому они больше не подвержены той же болезни. Модель SIR - это структура, описывающая, как количество людей в каждой группе может меняться со временем.';
+                return 'Восприимчивые - это группа людей, которые уязвимы для контакта с инфекционными людьми. Когда происходит инфекция, они заболевют. Группа заразных представляет зараженных людей. Они могут передать заболевание восприимчивым людям и могут вылечиться через какое-то время. Выздоровевшие люди получают иммунитет, поэтому они больше не подвержены той же болезни. Модель SIR - это структура, описывающая, как количество людей в каждой группе может меняться со временем.';
             }else{
                 return 'Susceptible is a group of people who are vulnerable to exposure with infectious people. They can be patient when the infection happens. The group of infectious represents the infected people. They can pass the disease to susceptible people and can be recovered in a specific period. Recovered people get immunity so that they are not susceptible to the same illness anymore. SIR model is a framework describing how the number of people in each group can change over time.'
             }
         },
         TheoryP3: state => {
             if(state.isRus){
-                return 'Модель SIR позволяет нам описать количество людей в каждом отсеке с помощью обыкновенного дифференциального уравнения. β - это параметр, контролирующий степень передачи заболевания при воздействии. Это определяется шансом контакта и вероятностью передачи заболевания. γ - это параметр, выражающий степень излечения заболевания за определенный период. Как только люди исцелены, они получают иммунитет. У них нет шансов снова вернуться в восприимчивое состояние.';
+                return 'Модель SIR позволяет нам описать количество людей в каждой группе с помощью обыкновенных дифференциальных уравнений. β - это параметр, контролирующий степень передачи заболевания при контакте. γ - это параметр, выражающий степень излечения заболевания за определенный период. Как только люди вылечиваются, они получают иммунитет, который не дает им стать  восприимчивыми.';
             }else{
                 return 'SIR model allows us to describe the number of people in each compartment with the ordinary differential equation. β is a parameter controlling how much the disease can be transmitted through exposure. It is determined by the chance of contact and the probability of disease transmission. γ is a parameter expressing how much the disease can be recovered in a specific period. Once the people are healed, they get immunity. There is no chance for them to go back susceptible again.'
             }
         },
         TheoryP4: state => {
             if(state.isRus){
-                return 'Мы не учитываем влияние естественной смерти или рождаемости, потому что модель предполагает, что выдающийся период заболевания намного короче, чем продолжительность жизни человека. Это позволяет нам понять важность знания двух параметров, β и γ. Когда мы можем оценить эти два значения, из этого вытекают несколько идей. Если D - это среднее количество дней для выздоровления от инфекционного заболевания, оно определяется по γ.';
+                return 'Модель учитывает влияние естественной смерти или рождаемости, потому что она предполагает, что период заболевания намного короче, чем продолжительность жизни человека. Это позволяет понять физический смысл параметров β и γ. По формуде ниже D - это среднее количество дней для выздоровления от инфекционного заболевания, оно определяется по γ.';
             }else{
                 return 'We do not consider the effect of the natural death or birth rate because the model assumes the outstanding period of the disease is much shorter than the lifetime of the human. It lets us know the importance of knowing two parameters, β and γ . When we can estimate the two values, there are several insights derived from it. If the D is the average days to recover from infectious, it is derived from γ .'
             }
@@ -319,7 +319,7 @@ export default {
         },
         TheoryP6: state => {
             if(state.isRus){
-                return 'Это называется основным номером воспроизведения. R 0 - это среднее число людей, зараженных одним другим человеком. Если оно высокое, вероятность пандемии также выше';
+                return 'R0 - это среднее число людей, зараженных одним человеком. Если оно высокое, вероятность пандемии также высокая.';
             }else{
                 return 'It is called a basic reproduction number. R 0 is the average number of people infected from one other person. If it is high, the probability of pandemic is also higher'
             }

@@ -100,14 +100,16 @@ import {mapGetters} from 'vuex'
           this.$store.commit('change_lang', value)
         }
       },
+      storage: function () {
+        return [
+          [this.MatModel, 'mdi-calculator-variant', '/sir/model'],
+          [this.ModelDesc, 'mdi-book-open-outline', '/sir/theory'],
+          [this.Sample, 'mdi-bacteria', '/sir/example'],
+        ]
+      },
     },
     data: () => ({
       drawer: false,
-      storage: [
-        ['Математическия модель', 'mdi-calculator-variant', '/sir/model'],
-        ['Описание модели', 'mdi-book-open-outline', '/sir/theory'],
-        ['Пример использования', 'mdi-bacteria', '/sir/example'],
-      ],
     }),
     created () {
       this.$vuetify.theme.dark = true

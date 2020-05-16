@@ -96,7 +96,7 @@
                 <br>
                 <div class="d_container">
                     <div class="img" style="width: 820px;">
-                        <img src="./chart.png">
+                        <img src="/sample_chart.png">
                     </div>
                 </div>
                 <br>
