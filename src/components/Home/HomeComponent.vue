@@ -61,7 +61,7 @@
 
                                 <v-card-actions>
                                     <v-btn
-                                            to="/seird"
+                                            to="/seir"
                                             color="blue"
                                             text
                                     >

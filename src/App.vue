@@ -29,13 +29,13 @@
         </v-list-group>
         <v-list-item
                 link
-                to="/seird"
+                to="/seir"
         >
           <v-list-item-action>
             <v-icon>mdi-chart-multiple</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Covid-19 и SEIRD</v-list-item-title>
+            <v-list-item-title>Covid-19 и SEIR</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item>

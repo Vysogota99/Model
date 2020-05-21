@@ -25,7 +25,7 @@ const routes = [
         component: SirTheory,
     },
     {
-        path: '/seird',
+        path: '/seir',
         component: SeirdModel,
     },
 ];
