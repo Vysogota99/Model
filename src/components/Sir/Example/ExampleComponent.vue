@@ -156,7 +156,7 @@
         width: 100%;
     }
     .img{
-        width: 410px;
+        max-width: 410px;
         margin: 0 auto;
     }
     img{
